@@ -202,10 +202,9 @@ newDoc db body = do
   (doc,rev) <- U.newDoc (show db) body
   return (Doc doc,Rev rev)
     
-getDoc :: (JSON a)
-       => DB -- ^database name
+getDoc :: DB -- ^database name
        -> Doc -- ^document name
-       -> CouchMonad (Maybe (Doc,Rev,a)) -- ^'Nothing' if the 
+       -> CouchMonad (Maybe (Doc,Rev,JSValue)) -- ^'Nothing' if the 
                                          -- doc does not exist
 getDoc db doc = do
   r <- U.getDoc (show db) (show doc)
