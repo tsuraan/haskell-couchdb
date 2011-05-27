@@ -89,10 +89,10 @@ newNamedDoc dbName docName body = do
       return (Right rev)
     (4,0,9) ->  do
       let result = couchResponse (rspBody r)
-      let (JSObject errorObj) = fromJust $ lookup "error" result
-      let (JSString reason) = 
-            fromJust $ lookup "reason" (fromJSObject errorObj)
-      return $ Left (fromJSString reason)
+      liftIO $ putStrLn $ "Result is " ++ (show result)
+      let (JSString error) = fromJust $ lookup "error" result
+      let (JSString reason) = fromJust $ lookup "reason" result
+      return $ Left $ (fromJSString error) ++ ":" ++ (fromJSString reason)
     otherwise -> error (show r)
 
 
