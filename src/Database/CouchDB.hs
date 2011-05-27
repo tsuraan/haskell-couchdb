@@ -213,10 +213,9 @@ getDoc db doc = do
     Just (_,rev,val) -> return $ Just (doc,Rev rev,val)
 
 
-getAllDocs :: JSON a
-           => DB
-          -> [(String, JSValue)] -- ^query parameters
-          -> CouchMonad [(Doc, a)]
+getAllDocs :: DB
+           -> [(String, JSValue)] -- ^query parameters
+           -> CouchMonad [(Doc, JSValue)]
 getAllDocs db args = do
   rows <- U.getAllDocs (show db) args
   return $ map (\(doc,val) -> (Doc doc,val)) rows
@@ -268,13 +267,12 @@ newView :: String -- ^database name
         -> CouchMonad ()
 newView = U.newView
 
-queryView :: (JSON a)
-          => DB  -- ^database
+queryView :: DB  -- ^database
           -> Doc  -- ^design
           -> Doc  -- ^view
           -> [(String, JSValue)] -- ^query parameters
           -- |Returns a list of rows.  Each row is a key, value pair.
-          -> CouchMonad [(Doc, a)]
+          -> CouchMonad [(Doc, JSValue)]
 queryView db viewSet view args = do
   rows <- U.queryView (show db) (show viewSet) (show view) args
   return $ map (\(doc,val) -> (Doc doc,val)) rows
